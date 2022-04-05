@@ -1,91 +1,355 @@
-{% extends 'base_layout.html' %}
+<!DOCTYPE html>
+<html>
 
-{% block content %}
-{% load crispy_forms_tags %}
-{% load socialaccount %}
-{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 
-<body onmousedown = "SendPostRequestHome(event)" >
-	
-		<nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark navbar-custom">
-			<div class="container"><a class="navbar-brand" style="font-size:150%;">VOICE BASED EMAIL FOR THE BLIND</a>
-				
-			</div>
-		</nav>
-		<header class="masthead text-center text-white">
-			<div class="masthead-content">
-				<div class="container">
-					<h1  style="margin-top:-60px; font-size:60px;color: black;" >LOGIN HERE</h1>
-					
-				<form action="homepage/login.html" method="POST">
-					<br><br><br><br>
-					<div class="container" >
-						
-						
-						<div class="login" id = "here">
-							<script> 
-								$(document).ready(function(){
-								setInterval(function(){
-									  $("#here").load(window.location.href + " #here" );
-								}, 1000);
-								});
-								</script>
-							
-							{% csrf_token %}
-							  <h3 style="color: black;text-align: left;margin-left: 10%;">Email:</h3>
-					
-							<input type="text" placeholder="Email" name="email"required value={{detail.email}} >
-					
-							  <br><br>
-							  <h3 style="color: black;text-align: left;margin-left: 10%;">Password: </h3>
-							 <input type="password" placeholder="Password" name="password"required value={{detail.password}} >
-					
-							   <a href="{% provider_login_url 'google' method='oauth2'%}"> Google</a>
-								<input href="options.html"class="btn btn-primary btn-xl rounded-pill mt-5" role="button" type="submit" value="LOGIN"style="background-color: black;"></a>
-								
-							  <br>
-							  
-							  
-							</div>
-						</div>							   
-					</div>
-				</div>
-			</form>
-				</div>
-			</div>
-			<div class="bg-circle-1 bg-circle"></div>
-			<div class="bg-circle-2 bg-circle"></div>
-			<div class="bg-circle-3 bg-circle"></div>
-			<div class="bg-circle-4 bg-circle"></div>
-		</header>
+    <body onmousedown="SendPostRequestHome(event)">
 
-		<script>
-		
-			function SendPostRequestHome(event){
-				
-				$.ajax({
-				url: "{% url 'homepage:login' %}",
-				method: 'POST',
-				data: { 'csrfmiddlewaretoken': '{{ csrf_token }}'},
-				success: function (data) {
-					
-					if(data.result == 'success'){
-						
-						window.location = "{% url 'homepage:options' %}";
-					}
-					else if(data.result == 'failure'){
-						window.location = "{% url 'homepage:login' %}";
-					}
-				}
-			});
-			}
-			</script>
-			
-			<footer class="py-5 bg-black">
-				<div class="container">
-					<p class="text-center text-white m-0 small">Copyright&nbsp;© Voice Based Email&nbsp;</p>
-				</div>
-			</footer>
+        <header>
+            <nav class="navigation">
+                <style>
+                    * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                    }
+                    
+                    header .navigation {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        position: fixed;
+                        min-height: 12vh;
+                        min-width: 100%;
+                        z-index: 10;
+                        background: #0f1423;
+                        border-bottom: 2px solid #0c2d48;
+                    }
+                    
+                    header .navigation .logo {
+                        margin-left: 100px;
+                    }
+                    
+                    header .navigation .logo h1 {
+                        color: #b1d4e0;
+                        font-size: 50px;
+                        line-height: 38px;
+                    }
+                    
+                    header .navigation .humbarger {
+                        margin-right: 20px;
+                        display: none;
+                    }
+                    /* Large Mobile :480px. */
+                    
+                    @media only screen and (max-width: 767px) {
+                        header .navigation .menu-list {
+                            position: absolute;
+                            top: 12vh;
+                            min-width: 100%;
+                            background: rgba(15, 20, 35, 0.99);
+                            text-align: center;
+                            display: none;
+                        }
+                    }
+                </style>
+                <!-- Logo -->
+                <div class="logo">
+                    <h1>Voice Based Email..</h1>
+                </div>
+
+                <!-- Navigation -->
 
 
-{% endblock %}
+                <div class="humbarger">
+                    <div class="bar"></div>
+                    <div class="bar2 bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </nav>
+            </div>
+            </div>
+        </header>
+
+
+        <style>
+            .user_card {
+                width: 350px;
+                margin-top: auto;
+                margin-bottom: auto;
+                background: #0f1423;
+                position: relative;
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                padding: 50px;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                border-radius: 5px;
+            }
+            
+            .form_container {
+                margin-top: 20px;
+            }
+            
+            #form-title {
+                color: #b1d4e0;
+                font-size: x-large;
+                font-weight: 600;
+            }
+            
+            .login_btn {
+                width: 100%;
+                background: #b1d4e0!important;
+                color: #0c2d48 !important;
+                font-size: x-large;
+                font-weight: 600;
+            }
+            
+            .login_btn:focus {
+                box-shadow: none !important;
+                outline: 0px !important;
+            }
+            
+            .login_container {
+                padding: 0 2rem;
+            }
+            
+            .input-group-text {
+                background: #b1d4e0 !important;
+                color: #0c2d48 !important;
+                border: 0 !important;
+                border-radius: 0.25rem 0 0 0.25rem !important;
+            }
+            
+            .input_user,
+            .input_pass:focus {
+                box-shadow: none !important;
+                outline: 0px !important;
+            }
+            
+            #messages {
+                background-color: grey;
+                color: #fff;
+                padding: 10px;
+                margin-top: 10px;
+            }
+        </style>
+
+</head>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Nunito", sans-serif;
+    }
+    
+    body {
+        background: #1f1f47
+    }
+    
+    .container {
+        min-height: 100vh;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .card {
+        width: 400px;
+        min-height: 250px;
+        background: rgba( 255, 255, 255, 0.15);
+        box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37);
+        backdrop-filter: blur( 18px);
+        -webkit-backdrop-filter: blur( 18px);
+        border: 1px solid rgba( 255, 255, 255, 0.18);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        z-index: 10;
+        color: whitesmoke;
+    }
+    
+    .title {
+        font-size: 2.2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .btn {
+        background: none;
+        border: none;
+        text-align: center;
+        font-size: 1rem;
+        color: whitesmoke;
+        background-color: #fa709a;
+        padding: 0.8rem 1.8rem;
+        border-radius: 2rem;
+        cursor: pointer;
+    }
+    
+    .blob {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: linear-gradient( 180deg, rgba(47, 184, 255, 0.42) 31.77%, #5c9df1 100%);
+        mix-blend-mode: color-dodge;
+        -webkit-animation: move 25s infinite alternate;
+        animation: move 25s infinite alternate;
+        transition: 1s cubic-bezier(0.07, 0.8, 0.16, 1);
+    }
+    
+    .blob:hover {
+        width: 520px;
+        height: 520px;
+        -webkit-filter: blur(30px);
+        filter: blur(30px);
+        box-shadow: inset 0 0 0 5px rgba(255, 255, 255, 0.6), inset 100px 100px 0 0px #fa709a, inset 200px 200px 0 0px #784ba8, inset 300px 300px 0 0px #2b86c5;
+    }
+    
+    @-webkit-keyframes move {
+        from {
+            transform: translate(-100px, -50px) rotate(-90deg);
+            border-radius: 24% 76% 35% 65% / 27% 36% 64% 73%;
+        }
+        to {
+            transform: translate(500px, 100px) rotate(-10deg);
+            border-radius: 76% 24% 33% 67% / 68% 55% 45% 32%;
+        }
+    }
+    
+    @keyframes move {
+        from {
+            transform: translate(-100px, -50px) rotate(-90deg);
+            border-radius: 24% 76% 35% 65% / 27% 36% 64% 73%;
+        }
+        to {
+            transform: translate(500px, 100px) rotate(-10deg);
+            border-radius: 76% 24% 33% 67% / 68% 55% 45% 32%;
+        }
+    }
+</style>
+<div class="container">
+    <div class="card">
+        <h1 class="title">JUST SAY IT</h1>
+        <p class="subtitle">
+            <form method="POST" action="">
+                <div class="input-group mb-3">
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    </div>
+                    <input type="text" name="username" placeholder="Username..." class="form-control">
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    </div>
+                    <input type="password" name="password" placeholder="Password..." class="form-control">
+                </div>
+
+                <div class="d-flex justify-content-center mt-3 login_container">
+                    <input class="btn login_btn" type="submit" value="Login">
+                </div>
+            </form>
+        </p><button class="btn">Let's get in..</button></div>
+    <div class="blob"></div>
+</div>
+<div class="container h-100">
+    <div class="d-flex justify-content-center h-100">
+        <div class="user_card">
+            <div class="d-flex justify-content-center">
+
+
+                <h3 id="form-title">LOGIN</h3>
+            </div>
+            <div class="d-flex justify-content-center form_container">
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+</body>
+<style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #0c2d48;
+        color: white;
+        text-align: center;
+    }
+</style>
+
+<div class="footer">
+    <p>Voice Based Email... Just say it !</p>
+</div>
+<script>
+    $(document).ready(function() {
+        setInterval(function() {
+            $("#here").load(window.location.href + " #here");
+        }, 1000);
+    });
+</script>
+
+{% csrf_token %}
+<h3 style="color: black;text-align: left;margin-left: 10%;">Email:</h3>
+
+<input type="text" placeholder="Email" name="email" required value={{detail.email}}>
+
+<br><br>
+<h3 style="color: black;text-align: left;margin-left: 10%;">Password: </h3>
+<input type="password" placeholder="Password" name="password" required value={{detail.password}}>
+<input href="options.html" class="btn btn-primary btn-xl rounded-pill mt-5" role="button" type="submit" value="LOGIN" style="background-color: black;"></a>
+
+<br>
+
+
+</div>
+</div>
+</div>
+</div>
+</form>
+
+
+</header>
+</body>
+<script>
+    function SendPostRequestHome(event) {
+
+        $.ajax({
+            url: "{% url 'homepage:login' %}",
+            method: 'POST',
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(data) {
+
+                if (data.result == 'success') {
+
+                    window.location = "{% url 'homepage:options' %}";
+                } else if (data.result == 'failure') {
+                    window.location = "{% url 'homepage:login' %}";
+                }
+            }
+        });
+    }
+</script>

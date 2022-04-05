@@ -1,123 +1,212 @@
-{% extends 'base_layout.html' %}
+<!DOCTYPE html>
+<html>
 
-{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-	<body onmousedown = "SendPostRequestOptions(event)">
-		<nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark navbar-custom">
-			<div class="container"><a class="navbar-brand" style="font-size:150%;">VOICE BASED EMAIL </a>
-				
-			</div>
-		</nav>
-		<header class="masthead text-left text-white">
-			<div class="masthead-content">
-				<div class="container" >
-					<center>
-						<h4 class="masthead-heading mb-0" style = "margin-top: -100px; font-size: 90px;color:black;">MENU PAGE</h4>			
-						<br>
-    
-						<h2> What would you like to do? <h2><br>
-						</center>
-					
-				<div container>
-				<div class ="options">
+    <body onmousedown="SendPostRequestOptions(event)">
+        <style>
+            body,
+            html {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                font-family: 'Helvetica', sans-serif;
+                background: #1abc9c;
+                background: -moz-linear-gradient(-45deg, rgba(26, 188, 156, 1) 0%, rgba(142, 68, 173, 1) 100%);
+                background: -webkit-linear-gradient(-45deg, rgba(26, 188, 156, 1) 0%, rgba(142, 68, 173, 1) 100%);
+                background: linear-gradient(135deg, rgba(26, 188, 156, 1) 0%, rgba(142, 68, 173, 1) 100%);
+            }
+            
+            h1 {
+                font-size: 24px;
+                margin: 10px 0 0 0;
+                font-weight: lighter;
+                text-transform: uppercase;
+                color: #eee;
+            }
+            
+            p {
+                font-size: 12px;
+                font-weight: light;
+                color: #333;
+            }
+            
+            span a {
+                font-size: 18px;
+                color: #ccc;
+                text-decoration: none;
+                margin: 0 10px;
+                transition: all 0.4s ease-in-out;
+            }
+            
+            span a:hover {
+                color: #fff;
+            }
+            
+            @keyframes float {
+                0% {
+                    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+                    transform: translatey(0px);
+                }
+                50% {
+                    box-shadow: 0 25px 15px 0px rgba(0, 0, 0, 0.2);
+                    transform: translatey(-20px);
+                }
+                100% {
+                    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+                    transform: translatey(0px);
+                }
+            }
+            
+            .container {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            .avatar {
+                width: 150px;
+                height: 150px;
+                box-sizing: border-box;
+                border: 5px white solid;
+                border-radius: 50%;
+                overflow: hidden;
+                box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+                transform: translatey(0px);
+                animation: float 6s ease-in-out infinite;
+            }
+            
+            .avatar img {
+                width: 100%;
+                height: auto;
+            }
+            
+            .content {
+                width: 100%;
+                max-width: 600px;
+                padding: 20px 40px;
+                box-sizing: border-box;
+                text-align: center;
+            }
+            
+            .suppoprt-me {
+                display: inline-block;
+                position: fixed;
+                bottom: 10px;
+                left: 10px;
+                width: 20vw;
+                max-width: 250px;
+                min-width: 200px;
+                z-index: 9;
+            }
+            
+            .suppoprt-me img {
+                width: 100%;
+                height: auto;
+            }
+        </style>
+        <div class="container">
+            <div class="avatar">
+                <a href="https://codepen.io/MarioDesigns/">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/751678/skytsunami.png" alt="Skytsunami" />
+                </a>
+            </div>
+            <div class="content">
+                <h1>What do you want me to do</h1>
+                <p>
 
-				
-				<table align="center" >
-					<tr>
-						<td>
-							<a href="compose.html"> 
-								<input href="compose.html"class="btn btn-primary btn-xl rounded-pill mt-5"
-								class="button" role="button"
-								style="width: 250px; background-color: black;" type="submit" 
-								value="COMPOSE"  style="background-color: black;"></a>
-						</td>
-					</tr>
-						
-					<tr>
-						<td>
-							<a href="inbox.html"> 
-								<input href="inbox.html"class="btn btn-primary btn-xl rounded-pill mt-5"
-								 role="button"
-								 style="width: 250px; background-color: black;" type="submit" 
-								value="INBOX" ></a>
-						</td>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <a href="compose.html">
+                                    <input href="compose.html" class="btn btn-primary btn-xl rounded-pill mt-5" class="button" role="button" style="width: 300px;height: 50px; background-color: rgb(237, 227, 227);" type="submit" value="COMPOSE" style="background-color: black;"></a>
+                            </td>
+                        </tr>
 
-					</tr>
-						
-					<tr>
-						<td>
-							<a href="sent.html"> 
-								<input href="sent.html"class="btn btn-primary btn-xl rounded-pill mt-5" 
-								role="button" 
-								style="width: 250px; background-color: black;" type="submit"  
-								value="SENT"></a>
-						</td>
-					</tr>
-						
-					<tr>
-						<td>
-							<a href="trash.html"> 
-								<input href="trash.html"class="btn btn-primary btn-xl rounded-pill mt-5"
-								role="button" 
-								style="width: 250px; background-color: black;"  type="submit" 
-								value="TRASH"></a>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<a href="login.html"> 
-								<input href="logout.html"class="btn btn-primary btn-xl rounded-pill mt-5"
-								role="button"
-								style="width: 250px; background-color: black;"  type="submit" 
-								value="LOGOUT"></a>
-						</td>
-					</tr>
-						
+                        <tr>
+                            <td>
+                                <a href="inbox.html">
+                                    <input href="inbox.html" class="btn btn-primary btn-xl rounded-pill mt-5" role="button" style="width:300px; height: 50px; background-color: rgb(237, 227, 227);" type="submit" value="INBOX"></a>
+                            </td>
 
-				</table>
-			</div>
-		</div>
-						
-		</div>
-			</div>
-			<div class="bg-circle-1 bg-circle"></div>
-			<div class="bg-circle-2 bg-circle"></div>
-			<div class="bg-circle-3 bg-circle"></div>
-			<div class="bg-circle-4 bg-circle"></div>
-		</header>
-		<footer class="py-5 bg-black">
-			<div class="container">
-				<p class="text-center text-white m-0 small">Copyright&nbsp;© Voice Based Email&nbsp;</p>
-			</div>
-		</footer>
-	<script>
-	function SendPostRequestOptions(event){
-		$.ajax({
-        url: "{% url 'homepage:options' %}",
-        method: 'POST',
-        data: { 'csrfmiddlewaretoken': '{{ csrf_token }}'},
-        success: function (data) {
-			if(data.result == 'compose'){
-				window.location = "{% url 'homepage:compose' %}";
-			}
-			else if(data.result == 'sent'){
-				window.location = "{% url 'homepage:sent' %}";
-			}	
-			else if(data.result == 'inbox'){
-				window.location = "{% url 'homepage:inbox' %}";
-			}
-			else if(data.result == 'trash'){
-				window.location = "{% url 'homepage:trash' %}";
-			}
-			else if(data.result == 'logout'){
-				window.location = "{% url 'homepage:login' %}";
-			}
-			else if(data.result == 'failure'){
-				window.location = "{% url 'homepage:options' %}";
-			}
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <a href="sent.html">
+                                    <input href="sent.html" class="btn btn-primary btn-xl rounded-pill mt-5" role="button" style="width: 300px;height: 50px; background-color: rgb(237, 227, 227);" type="submit" value="SENT"></a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <a href="trash.html">
+                                    <input href="trash.html" class="btn btn-primary btn-xl rounded-pill mt-5" role="button" style="width: 300px;height: 50px; background-color: rgb(237, 227, 227);" type="submit" value="TRASH"></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="login.html">
+                                    <input href="logout.html" class="btn btn-primary btn-xl rounded-pill mt-5" role="button" style="width:300px;height: 50px; background-color: rgb(237, 227, 227);" type="submit" value="LOGOUT"></a>
+                            </td>
+                        </tr>
+
+
+                    </table>
+            </div>
+        </div>
+        </p>
+        <p>
+
+            </div>
+            </div>
+        </p>
+    </body>
+    <style>
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #0c2d48;
+            color: white;
+            text-align: center;
         }
-    });
-	}
-	</script>
+    </style>
 
-{% endblock %}
+    <div class="footer">
+        <p color: white>Voice Based Email... Just say it !</p>
+    </div>
+    <script>
+        function SendPostRequestOptions(event) {
+            $.ajax({
+                url: "{% url 'homepage:options' %}",
+                method: 'POST',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(data) {
+                    if (data.result == 'compose') {
+                        window.location = "{% url 'homepage:compose' %}";
+                    } else if (data.result == 'sent') {
+                        window.location = "{% url 'homepage:sent' %}";
+                    } else if (data.result == 'inbox') {
+                        window.location = "{% url 'homepage:inbox' %}";
+                    } else if (data.result == 'trash') {
+                        window.location = "{% url 'homepage:trash' %}";
+                    } else if (data.result == 'logout') {
+                        window.location = "{% url 'homepage:login' %}";
+                    } else if (data.result == 'failure') {
+                        window.location = "{% url 'homepage:options' %}";
+                    }
+                }
+            });
+        }
+    </script>

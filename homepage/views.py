@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect
 from . import forms
 from .models import Details
@@ -16,7 +15,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 from django.http import JsonResponse
 import re
-import socket
+
 file = "good"
 i="0"
 passwrd = ""
@@ -27,7 +26,6 @@ body = ""
 s = smtplib.SMTP('smtp.gmail.com', 587)
 s.starttls()
 imap_url = 'imap.gmail.com'
-conn = imaplib.IMAP4_SSL("imap.gmail.com", 993)
 conn = imaplib.IMAP4_SSL(imap_url)
 attachment_dir = 'C:/Users/Chacko/Desktop/'
 
@@ -95,16 +93,67 @@ def login_view(request):
     global i, addr, passwrd 
 
     if request.method == 'POST':
-        text1 = "Welcome to our Voice Based Email. Login with your email account in order to continue..Please login with your google account "
+        text1 = "Welcome to our Voice Based Email. Login with your email account in order to continue. "
         texttospeech(text1, file + i)
         i = i + str(1)
 
-        
+        flag = True
+        while (flag):
+            texttospeech("Enter your Email", file + i)
+            i = i + str(1)
+            addr = speechtotext(10)
+            
+            if addr != 'N':
+                texttospeech("You meant " + addr + " say yes to confirm or no to enter again", file + i)
+                i = i + str(1)
+                say = speechtotext(3)
+                if say == 'yes' or say == 'Yes':
+                    flag = False
+            else:
+                texttospeech("could not understand what you meant:", file + i)
+                i = i + str(1)
+        addr = addr.strip()
+        addr = addr.replace(' ', '')
+        addr = addr.lower()
+        addr = convert_special_char(addr)
+        print(addr)
+        request.email = addr
+
+        flag = True
+        while (flag):
+            texttospeech("Enter your password", file + i)
+            i = i + str(1)
+            passwrd = speechtotext(10)
+            
+            if addr != 'N':
+                texttospeech("You meant " + passwrd + " say yes to confirm or no to enter again", file + i)
+                i = i + str(1)
+                say = speechtotext(3)
+                if say == 'yes' or say == 'Yes':
+                    flag = False
+            else:
+                texttospeech("could not understand what you meant:", file + i)
+                i = i + str(1)
+        passwrd = passwrd.strip()
+        passwrd = passwrd.replace(' ', '')
+        passwrd = passwrd.lower()
+        passwrd = convert_special_char(passwrd)
+        print(passwrd)
+
         imap_url = 'imap.gmail.com'
         #passwrd = ''
         #addr = ''
         conn = imaplib.IMAP4_SSL(imap_url)
-        
+        try:
+            conn.login(addr, passwrd)
+            s.login(addr, passwrd)
+            texttospeech("Congratulations. You have logged in successfully. You will now be redirected to the menu page.", file + i)
+            i = i + str(1)
+            return JsonResponse({'result' : 'success'})
+        except:
+            texttospeech("Invalid Login Details. Please try again.", file + i)
+            i = i + str(1)
+            return JsonResponse({'result': 'failure'})
 
     
     detail  = Details()
@@ -543,19 +592,17 @@ def search_specific_mail(folder,key,value,foldername):
 def inbox_view(request):
     global i, addr, passwrd, conn
     if request.method == 'POST':
- 
         imap_url = 'imap.gmail.com'
-        conn= imaplib.IMAP4_SSL("imap.gmail.com", 993)
         conn = imaplib.IMAP4_SSL(imap_url)
         conn.login(addr, passwrd)
-        conn.select(('"[Gmail]/All Mail"'))
+        conn.select('"INBOX"')
         result, data = conn.search(None, '(UNSEEN)')
         unread_list = data[0].split()
         no = len(unread_list)
         result1, data1 = conn.search(None, "ALL")
         mail_list = data1[0].split()
-        text1 = "You have reached your inbox. There are " + str(len(mail_list)) + " total mails in your inbox. You have " + str(no) + " unread emails" + ". To read unread emails say unread. To search a specific email say search. To go back to the menu page say back. To logout say logout."
-        texttospeech(text1, file + i)
+        text = "You have reached your inbox. There are " + str(len(mail_list)) + " total mails in your inbox. You have " + str(no) + " unread emails" + ". To read unread emails say unread. To search a specific email say search. To go back to the menu page say back. To logout say logout."
+        texttospeech(text, file + i)
         i = i + str(1)
         flag = True
         while(flag):
